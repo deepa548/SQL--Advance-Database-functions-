@@ -1,0 +1,73 @@
+****week 4 conditonal statements****
+SELECT last_name, salary, job_id, CASE WHEN job_id= 'IT_PROG' THEN 'Technology'
+WHEN job_id='PU_CLERK' THEN 'FIELD'
+WHEN job_id='ST_CLERK' THEN 'FIELD'
+ELSE 'OFFICE'
+
+END AS "JOB TYPE"
+FROM HR_EMPLOYEES
+
+
+
+*************
+DECLARE
+v_grade CHAR(1) := UPPER('&grd');
+v_appraisal VARCHAR2(20);
+BEGIN
+v_appraisal := CASE v_grade
+WHEN 'A' THEN 'Excellent'
+WHEN 'B' THEN 'Very Good'
+WHEN 'C' THEN 'Good'
+ELSE 'No such grade'
+END;
+DBMS_OUTPUT.PUT_LINE ('Grade: '|| v_grade || ' Appraisal ' || v_appraisal);
+END;
+/
+*******
+
+
+Test Basic and WHILE loop
+
+CREATE TABLE test1
+(id number,
+name char(50)
+)
+
+
+
+write a basic loop to insert records into test1 until id becomes 5 (inclusive) , name is always Test
+1 Test
+2 Test
+3 Test
+4 Test
+5 Test
+
+DECLARE
+v_iter number :=1;
+BEGIN
+LOOP
+INSERT INTO test1 VALUES (v_iter, 'Test');
+v_iter := v_iter +1;
+EXIT WHEN v_iter > 5;
+END LOOP;
+END;
+
+SELECT * FROM test1
+Write a while loop to insert into test1 table if the counter is less than or equal to 5
+1 Test
+2 Test
+3 Test
+4 Test
+5 Test
+
+
+DECLARE
+v_iter number :=1;
+BEGIN
+WHILE v_iter <=5 LOOP
+INSERT INTO test1 VALUES (v_iter, 'Test');
+v_iter := v_iter +1;
+
+END LOOP;
+END;
+

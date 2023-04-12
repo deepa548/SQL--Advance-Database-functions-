@@ -1,0 +1,251 @@
+//month
+
+SELECT * FROM staff
+WHERE month(dob)=6
+
+/*/year
+
+show us all the staff who was born after the year of 1945
+
+	SELECT * FROM staff
+	
+	WHERE YEAR(dob) > 1945
+
+//length
+
+
+
+	SELECT * FROM staff
+	WHERE LEN(lname)=6
+
+//month
+
+SELECT * from Employees WHERE UPPER(last_name)= UPPER ('KING')
+
+//multiple row
+SELECT AVG(salary), MIN (SALARY), MAX(SALARY) FROM hr.employees
+
+// use count to number of employees
+
+SELECT COUNT(commission_pct) FROM HR.EMPLOYEES
+
+//group fns
+
+SELECT   department_id , AVG(SALARY),COUNT(*), MIN(SALARY), MAX(SALARY)
+FROM hr.employees
+GROUP BY department_id
+ORDER BY 1 ASC
+
+
+SELECT department_id, max(salary)
+FROM hr.employees
+GROUP BY department_id
+HAVING max(salary) >10000
+
+// lower function
+
+select LOWER(firstname)
+FROM customers
+WHERE LOWER(lastname)='nelson';
+
+SELECT * FROM books
+WHERE LOWER(category)= lower('cooKING')	
+
+//substring function
+
+select distict zip,SUBSTR(zip,1,3) from customers
+where SUBSTR(zip,-3,2)<30;
+
+
+
+//Find all the employees who got hired before 1st of Febr, 1988
+
+
+SELECT last_name, to_char(hire_date, 'DD-MON-RR’)
+FROM employees
+WHERE hire_date < to_date ('01-FEB-88', 'DD-MON-RR')
+
+
+
+SELECT customer#, lastname, firstname, NVL
+(email,'Do not include to online campaign') as
+"Campaign customers" from customers";
+
+//nvl2
+
+SELECT order#,shipdate, NVL2(shipdate,'Shipped', 'Not Yet Shipped')
+FROM orders
+
+//cocat
+SELECT first_name || ' ' || last_name || ' ' || phone_number|| ' ' || salary FROM employees
+
+
+//replace
+
+Select last_name, first_name, salary and phone number of employee but also add one more column as
+new phone
+number , in there show phone number as 650-507-9833 instead of '.'
+Option 1: SELECT REPLACE
+select last_name, first_name, salary, phone_number, replace(phone_number, '.','-') from employees;
+
+// tochar
+
+SELECT last_name,
+TO_CHAR(hire_date, 'fmDD Month YYYY')
+AS HIREDATE
+FROM employees;
+
+
+//case
+
+SELECT last_name, job_id, salary,
+	CASE job_id WHEN 'IT_PROG' THEN 1.10*salary
+		     WHEN 'ST_CLERK' THEN 1.15*salary
+                   WHEN 'SA_REP' THEN 1.20*salary
+        ELSE salary END "REVISED_SALARY"
+FROM employees;
+
+
+
+//decode
+
+
+SELECT last_name, job_id, salary,
+       DECODE(job_id, 'IT_PROG', 1.10*salary,
+                       'ST_CLERK', 1.15*salary,
+                       'SA_REP', 1.20*salary,
+                   salary)
+	REVISED_SALARY
+FROM employees;
+
+
+//count
+
+SELECT count(DISTINCT (department_id) ) FROM employees -- right answer. this shows 11 unique
+departments are defined in this company so 108 people are working any of these 11 different
+department.
+
+
+//group by
+
+//list of min cost, max cost, avg cost , total number of book in each category for those category name
+start with C
+
+
+select category, min(cost), max(cost), avg(cost), count(*)
+from books
+where category like 'C%'
+group by category
+
+//list of min cost, max cost, avg cost , total number of book in each category
+but only show the category result where total number of books are greater than and equal 2
+
+
+select category, min(cost), max(cost), avg(cost), count(*)
+from books
+group by category
+HAVING count(*) >=2
+
+///list of min cost, max cost, avg cost , total number of book in each category
+but only show the category result where avg cost is less than 20
+
+
+
+select category, min(cost), max(cost), avg(cost), count(*)
+from books
+group by category
+HAVING avg(cost) <20
+
+//Retrieving Records with Natural Joins
+
+SELECT department_id, department_name,
+location_id, city
+FROM departments
+NATURAL JOIN locations ;
+
+
+//using clause
+
+SELECT employee_id, last_name,
+location_id, department_id
+FROM employees JOIN departments
+USING (department_id) ;
+
+//on- Retrieving Records with the ON Clause
+SELECT e.employee_id, e.last_name, e.department_id,
+d.department_id, d.location_id
+FROM employees e JOIN departments d
+ON (e.department_id = d.department_id);
+
+
+//Creating Three-Way Joins with
+the ON Clause
+SELECT employee_id, city, department_name
+FROM employees e
+JOIN departments d
+ON d.department_id = e.department_id
+JOIN locations l
+ON d.location_id = l.location_id;
+
+
+//addtional conditions
+
+
+SELECT e.employee_id, e.last_name, e.department_id,
+d.department_id, d.location_id
+FROM employees e JOIN departments d
+ON (e.department_id = d.department_id)
+AND e.manager_id = 149 ;
+
+// where
+SELECT e.employee_id, e.last_name, e.department_id,
+d.department_id, d.location_id
+FROM employees e JOIN departments d
+ON (e.department_id = d.department_id)
+WHERE e.manager_id = 149 ;
+
+
+//Self-Joins Using the ON Clause
+SELECT worker.last_name emp, manager.last_name mgr
+FROM employees worker JOIN employees manager
+ON (worker.manager_id = manager.employee_id);
+
+
+//left outer join
+SELECT e.last_name, e.department_id, d.department_name
+FROM employees e LEFT OUTER JOIN departments d
+ON (e.department_id = d.department_id) ;
+
+
+//2) Show all employees along with their name, lname, salary job id, dept, 
+//city for those who are making more than 5000 and not earning comission
+
+SELECT e.first_name, e.last_name, e.salary, d.department_name, l.city
+FROM hr_employees e JOIN hr_departments d
+ON e.department_id = d.department_id
+JOIN hr_locations l     
+ON d.location_id = l.location_id
+AND e.salary > 5000 and e.commission_pct IS NULL;
+
+//or 
+WHERE salary > 5000 and commission_pct IS NULL
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

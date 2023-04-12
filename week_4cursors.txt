@@ -1,0 +1,118 @@
+DECLARE
+rec_emp hr_employees%ROWTYPE;
+
+BEGIN
+SELECT * INTO rec_emp FROM hr_employees WHERE employee_id=104;
+
+IF rec_emp.salary > 5000 and rec_emp.job_id ='IT_PROG' THEN
+DBMS_OUTPUT.PUT_LINE (rec_emp.salary ||rec_emp.salary *1.10);
+ELSE
+DBMS_OUTPUT.PUT_LINE ('No Increase');
+END IF;
+END;
+
+
+///Handling many different column only for one employee record at a time
+
+DECLARE
+rec_emp hr_employees%ROWTYPE;
+
+BEGIN
+SELECT * INTO rec_emp FROM hr_employees WHERE employee_id=104;
+
+IF rec_emp.salary > 5000 and rec_emp.job_id ='IT_PROG' THEN
+DBMS_OUTPUT.PUT_LINE (rec_emp.salary ||rec_emp.salary *1.10);
+ELSE
+DBMS_OUTPUT.PUT_LINE ('No Increase');
+END IF;
+
+END;
+
+
+
+///Handling many different column only for multiple employee record at a time with cursors
+
+
+
+
+DECLARE
+CURSOR cur_emp IS
+SELECT * FROM hr_employees;
+
+emp_rec cur_emp%ROWTYPE;
+BEGIN
+
+OPEN cur_emp;
+LOOP
+FETCH cur_emp INTO emp_rec;
+
+IF emp_rec.salary > 5000 and emp_rec.job_id ='IT_PROG' THEN
+DBMS_OUTPUT.PUT_LINE (emp_rec.salary ||emp_rec.salary *1.10);
+ELSE
+DBMS_OUTPUT.PUT_LINE ('No Increase');
+END IF;
+EXIT WHEN cur_emp%NOTFOUND;
+END LOOP;
+CLOSE cur_emp;
+END;
+
+// find employee_id,salary,salary *12 ,city for only 1 employee who is id 201
+
+
+
+//find employeeid,salary,yearly salary,city for everyone and using cursor technique 
+
+DECLARE
+CURSOR cur_emp IS
+SELECT * FROM hr_employees;
+
+emp_rec cur_emp%ROWTYPE;
+BEGIN
+
+OPEN cur_emp;
+LOOP
+FETCH cur_emp INTO emp_rec;
+
+IF emp_rec.salary > 5000 and emp_rec.job_id ='IT_PROG' THEN
+DBMS_OUTPUT.PUT_LINE (emp_rec.salary ||emp_rec.salary *1.10);
+ELSE
+DBMS_OUTPUT.PUT_LINE ('No Increase');
+END IF;
+EXIT WHEN cur_emp%NOTFOUND;
+END LOOP;
+CLOSE cur_emp;
+END;
+
+DECLARE
+CURSOR cur_emp IS
+SELECT * FROM HR_EMPLOYEES E JOIN HR_DEPARTMENTS D
+ON E.DEPARTMENT_ID = D.DEPARTMENT_ID
+JOIN HR_LOCATIONS L
+ON D.LOCATION_ID = L.LOCATION_ID;
+
+VAR_CUR_SALARY_ANNUAL hr_employees.salary%TYPE;
+BEGIN
+
+FOR emp_rec IN cur_emp LOOP
+VAR_CUR_SALARY_ANNUAL := EMP_REC.SALARY * 12;
+
+IF (EMP_REC.CITY = 'Toronto') THEN
+IF (VAR_CUR_SALARY_ANNUAL < 100000) THEN DBMS_OUTPUT.PUT_LINE ('10 % increase');
+ELSE DBMS_OUTPUT.PUT_LINE ('7 % increase');
+END IF;
+ELSIF (EMP_REC.CITY = 'Seattle') THEN
+IF (VAR_CUR_SALARY_ANNUAL < 100000) THEN DBMS_OUTPUT.PUT_LINE ('12 % increase');
+ELSE DBMS_OUTPUT.PUT_LINE ('15 % increase');
+END IF;
+ELSE
+DBMS_OUTPUT.PUT_LINE ('no increase');
+END IF;
+
+END LOOP;
+END;
+
+//
+
+
+
+

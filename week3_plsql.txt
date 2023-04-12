@@ -1,0 +1,41 @@
+
+***** reusability****************
+DECLARE
+var_fname varchar2(20);
+var_sal number(8,2);
+BEGIN
+SELECT first_name, salary INTO var_fname, var_sal FROM HR_EMPLOYEES WHERE employee_id=108;
+DBMS_OUTPUT.PUT_LINE (var_fname || var_sal );
+END;
+
+******* reusing nad displaying old value +new value;
+DECLARE
+var_fname varchar2(20);
+var_sal number(8,2) ;
+var_newsal number(8,2) ;
+BEGIN
+SELECT first_name,salary INTO var_fname , var_sal FROM hr_employees where employee_id=108******
+
+var_newsal := var_sal*1.15;
+DBMS_OUTPUT.PUT_LINE( 'Person First name is ' || var_fname || ' ' || ' and used to earn' || var_sal || ' but now earns ' || var_newsal);
+
+END;
+*********
+
+DECLARE
+V_BASIC_PERCENT NUMBER(2) := 45;
+V_PF_PERCENT NUMBER(2) :=12 ;
+V_FNAME VARCHAR2(15);
+V_EMP_SAL NUMBER(10);
+V_PF_CONT NUMBER(10,2);
+
+BEGIN
+
+SELECT FIRST_NAME, SALARY INTO V_FNAME, V_EMP_SAL FROM HR_EMPLOYEES WHERE EMPLOYEE_ID = 110;
+
+V_PF_CONT := (V_PF_PERCENT / 100) * (V_PF_PERCENT / 100) * V_EMP_SAL;
+
+DBMS_OUTPUT.PUT_LINE ('Hello ' || V_FNAME);
+DBMS_OUTPUT.PUT_LINE ('Your PF Contribution is ' || V_PF_CONT);
+
+END;

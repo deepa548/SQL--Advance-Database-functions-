@@ -1,0 +1,12 @@
+DECLARE
+rec_emp hr_employees%ROWTYPE;
+
+BEGIN
+SELECT * INTO rec_emp FROM hr_employees WHERE employee_id=104;
+
+IF rec_emp.salary > 5000 and rec_emp.job_id ='IT_PROG' THEN
+DBMS_OUTPUT.PUT_LINE (rec_emp.salary ||rec_emp.salary *1.10);
+ELSE
+DBMS_OUTPUT.PUT_LINE ('No Increase');
+END IF;
+END;
